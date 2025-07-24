@@ -37,19 +37,16 @@ public class MasterPasswordManager {
         }
     }
 
-    public static boolean verifyMasterPassword() {
-        System.out.print("🔐 Enter master password: ");
-        String input = scanner.nextLine();
+    public static boolean verifyMasterPassword(String input) {
         String hashInput = PasswordSecurity.hash(input);
-
         String sql = "SELECT hash FROM master WHERE id = 1";
+
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                String hashStored = rs.getString("hash");
-                return hashStored.equals(hashInput);
+                return hashInput.equals(rs.getString("hash"));
             }
         } catch (Exception e) {
             System.out.println("❌ Error: " + e.getMessage());

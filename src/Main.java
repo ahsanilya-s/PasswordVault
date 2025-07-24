@@ -1,22 +1,15 @@
 import db.DatabaseHelper;
 import security.MasterPasswordManager;
+import ui.LoginScreen;
 
 public class Main {
     public static void main(String[] args) {
-        DatabaseHelper.createTables(); // setup DB
+        DatabaseHelper.createTables();
 
         if (!MasterPasswordManager.isMasterSet()) {
-            MasterPasswordManager.createMasterPassword();
-        } else {
-            boolean verified = MasterPasswordManager.verifyMasterPassword();
-            if (!verified) {
-                System.out.println("❌ Incorrect master password. Exiting...");
-                return;
-            } else {
-                System.out.println("✅ Access granted.");
-            }
+            MasterPasswordManager.createMasterPassword(); // still uses console
         }
 
-        // Next: load dashboard or GUI
+        new LoginScreen(); // start GUI login
     }
 }
